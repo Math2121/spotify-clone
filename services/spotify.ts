@@ -9,6 +9,7 @@ const scopes = [
 "user-read-private",
 "user-library-read",
 "user-top-read",
+"user-library-modify",
 "user-read-playback-state",
 "user-modify-playback-state",
 "user-read-currently-playing",
@@ -29,7 +30,7 @@ const spotifyApi = new SpotifyWebApi({
     clientId:process.env.NEXT_PUBLIC_CLIENT_ID,
     clientSecret:process.env.NEXT_PUBLIC_CLIENT_SECRET
 })
-
+console.log(spotifyApi)
 export default spotifyApi
 
 export {LOGIN_URL}
