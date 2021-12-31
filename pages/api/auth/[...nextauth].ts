@@ -49,8 +49,8 @@ export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     SpotifyProvider({
-      clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET,
+      clientId: process.env.NEXT_PUBLIC_CLIENT_ID as string,
+      clientSecret: process.env.NEXT_PUBLIC_CLIENT_SECRET as string,
       authorization: LOGIN_URL,
     }),
 
@@ -62,6 +62,7 @@ export default NextAuth({
   callbacks: {
     async jwt({ token, account, user }: any) {
       //assim que o usuário logar
+  
       if (account && user) {
         return {
           ...token,
@@ -74,7 +75,7 @@ export default NextAuth({
 
       // Caso o access token não tenha expirado ainda
       if (Date.now() < token.accessTokenExpires) {
-        console.log("token valid yet");
+     
         return token;
       }
 
