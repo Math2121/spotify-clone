@@ -1,31 +1,10 @@
 import NextAuth, { User, Account } from "next-auth";
-import { JWT } from "next-auth/jwt";
 import SpotifyProvider from "next-auth/providers/spotify";
 import spotifyApi, { LOGIN_URL } from "../../../services/spotify";
-interface ISpotify {
-  clientId: string;
-  clientSecret: string;
-  authorization: string;
-}
 
-// interface ICallback {
-//   token: JWT | any;
-//   account: Account | undefined;
-//   user: User | undefined;
-// }
-// interface ISession {
-//   session: {
-//     user: {
-//       username: string;
-//       refreshToken: string;
-//       accessToken: string;
-//     };
-//   };
-//   token: JWT | any;
-// }
-
-async function refreshAccessToken(token: JWT | any) {
+async function refreshAccessToken(token: any) {
   try {
+
     spotifyApi.setAccessToken(token.accessToken);
     spotifyApi.setRefreshToken(token.refreshToken);
     const { body: refreshdToken } = await spotifyApi.refreshAccessToken();
@@ -38,7 +17,7 @@ async function refreshAccessToken(token: JWT | any) {
       refreshToken: refreshdToken.refresh_token ?? token.refresh_token,
     };
   } catch (error) {
-    console.error("OII" + error);
+    console.log(error);
     return {
       ...token,
       error: "RefreshTokenError",
@@ -61,9 +40,11 @@ export default NextAuth({
   },
   callbacks: {
     async jwt({ token, account, user }: any) {
-      //assim que o usuário logar
-  
+      
+      // assim que o usuário logar
+     
       if (account && user) {
+  
         return {
           ...token,
           accessToken: account.access_token,
@@ -73,12 +54,14 @@ export default NextAuth({
         };
       }
 
-      // Caso o access token não tenha expirado ainda
-      if (Date.now() < token.accessTokenExpires) {
      
+      /// Caso o access token não tenha expirado ainda
+      if (Date.now() < token.accessTokenExpires) {
+      
         return token;
       }
 
+      console.log("Token Expirou !")
       //O token expirou
       return await refreshAccessToken(token);
     },

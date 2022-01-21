@@ -16,17 +16,15 @@ interface IUser {
   status: string;
 }
 export default function useSpotify() {
-  const { data: session, status } = useSession() as IUser;
+  const { data: session, status } = useSession();
   useEffect(() => {
     // Se o refresh token não funcionar direciona para a página de login
     if (session) {
-      if (session.error === "RefreshAccessTokenError") {
+      if (session.error === "RefreshTokenError") {
         signIn();
       }
-    
-        spotifyApi.setAccessToken(session.user.accessToken);
-       
 
+      spotifyApi.setAccessToken(session.user.accessToken);
     }
   }, [session]);
   return spotifyApi;

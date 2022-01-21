@@ -9,13 +9,13 @@ const scopes = [
 "user-read-private",
 "user-library-read",
 "user-top-read",
-"user-library-modify",
+//"user-library-modify",
 "user-read-playback-state",
 "user-modify-playback-state",
 "user-read-currently-playing",
 "user-read-recently-played",
 "user-follow-read"
-].join(", ") // user-read-email,playlist-read-private, ...
+].join(",") // user-read-email,playlist-read-private, ...
 
 
 const params = {
@@ -28,9 +28,9 @@ const LOGIN_URL = `https://accounts.spotify.com/authorize?${queryString.toString
 
 const spotifyApi = new SpotifyWebApi({
     clientId:process.env.NEXT_PUBLIC_CLIENT_ID,
-    clientSecret:process.env.NEXT_PUBLIC_CLIENT_SECRET
+    clientSecret:process.env.NEXT_PUBLIC_CLIENT_SECRET,
 })
-console.log(spotifyApi)
+
 export default spotifyApi
 
 export {LOGIN_URL}

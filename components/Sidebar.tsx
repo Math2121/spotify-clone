@@ -8,11 +8,18 @@ import {
 } from "@heroicons/react/outline";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { playlistIdState } from "../atoms/playlistAtom";
 import useSpotify from "../hooks/useSpotify";
-
+interface IPlaylist {
+  id: string;
+  name: string;
+}
 function Sidebar() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+  
   const [playlist, SetPlayList] = useState([]);
+  const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
   // hook para ter acesso as minhas informações do spotify
   const spotifyApi = useSpotify();
 
@@ -24,13 +31,12 @@ function Sidebar() {
     }
   }, [session, spotifyApi]);
 
-
   return (
-    <div className="text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll scrollbar-hide h-screen">
+    <div className="text-gray-500 p-5 text-sm border-r border-gray-900 overflow-y-scroll scrollbar-hide h-screen sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex">
       <div className="space-y-4">
         <button
           className="flex items-center space-x-2 hover:text-white transition duration-150"
-          onClick={() => signOut()}
+          onClick={() => signOut({ callbackUrl: '/login' })}
         >
           <HomeIcon className="h-5 w-5" />
           <p>Logout</p>
@@ -67,9 +73,13 @@ function Sidebar() {
         </button>
         <hr className=" border-t-[0.1px] border-gray-900" />
 
-        {/**Conectando a API do spotifu e buscando a playslit dele */}
-        {playlist.map((play) => (
-          <p key={play.id} className="cursor-pointer hover:text-white">
+        {/**Conectando a API do spotify e buscando a playslit dele */}
+        {playlist.map((play: IPlaylist) => (
+          <p
+            key={play.id}
+            className="cursor-pointer hover:text-white"
+            onClick={() => setPlaylistId(play.id)}
+          >
             {play.name}
           </p>
         ))}
