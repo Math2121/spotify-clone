@@ -17,7 +17,6 @@ async function refreshAccessToken(token: any) {
       refreshToken: refreshdToken.refresh_token ?? token.refresh_token,
     };
   } catch (error) {
-    console.log(error);
     return {
       ...token,
       error: "RefreshTokenError",
@@ -54,14 +53,14 @@ export default NextAuth({
         };
       }
 
-     
+   
       /// Caso o access token não tenha expirado ainda
       if (Date.now() < token.accessTokenExpires) {
-      
+  
         return token;
       }
 
-      console.log("Token Expirou !")
+      console.log("Token Expirou!",token)
       //O token expirou
       return await refreshAccessToken(token);
     },

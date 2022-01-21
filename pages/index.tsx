@@ -12,7 +12,7 @@ export default function Home() {
         <title>Spotify Clone</title>
       </Head>
 
-      <main className="bg-black h-screen overflow-hidden">
+      <main className="bg-black h-screen overflow-hidden relative">
         <div className="flex">
           <Sidebar />
           <Main />
